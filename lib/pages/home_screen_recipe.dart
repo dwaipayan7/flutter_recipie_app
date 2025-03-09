@@ -17,6 +17,15 @@ class HomeScreenRecipe extends StatefulWidget {
 
 class _HomeScreenRecipeState extends State<HomeScreenRecipe> {
   int selectedIndex = 0;
+  int selectedPage = 0;
+
+  List<IconData> icons = [
+    Iconsax.home1,
+    Icons.bar_chart_rounded,
+    Iconsax.heart,
+    Icons.person_outline_rounded,
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,45 +198,132 @@ class _HomeScreenRecipeState extends State<HomeScreenRecipe> {
 
             SizedBox(height: 10),
 
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(recipeCategory.length, (index) {
-                  final category = recipeCategory[index];
-                  return Padding(
-                    padding:
-                        index == 0
-                            ? EdgeInsets.only(left: 20, right: 20)
-                            : EdgeInsets.only(right: 20),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 33,
-                          backgroundColor: recipeCategory[index].color,
-                          child: Image.asset(
-                            recipeCategory[index].image,
-                            height: 40,
-                            width: 40,
-                          ),
-                        ),
+            categoryItems(),
 
-                        SizedBox(height: 3),
-                        Text(
-                          recipeCategory[index].name,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+            Padding(
+              padding: EdgeInsets.all(40),
+              child: Row(
+                children: [
+                  Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          "https://media.istockphoto.com/id/1213660289/photo/young-beautiful-chinese-chef-woman-wearing-cooker-uniform-and-hat-holding-tray-with-dome-with.jpg?s=612x612&w=0&k=20&c=Acr3SpWXvGhElDWXTo2Z7hfc7jpUQrXJuOs9SzuZEHA=",
                         ),
-                      ],
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  );
-                }),
+                  ),
+
+                  SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Helping Hand",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "Expert Chief",
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.5),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
         ),
+      ),
+      bottomSheet: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [BoxShadow(color: Colors.black12, spreadRadius: 1)],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(icons.length, (index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedPage = index;
+                });
+              },
+              child: SizedBox(
+                height: 40,
+                width: 40,
+                child: Column(
+                  children: [
+                    Icon(
+                      icons[index],
+                      color:
+                          index == selectedPage ? Colors.green : Colors.grey,
+                      size: 28,
+                    ),
+                    index == selectedPage ? Container(
+                    height: 3,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.green,
+                      ),
+                    ) : SizedBox(),
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget categoryItems() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: List.generate(recipeCategory.length, (index) {
+          final category = recipeCategory[index];
+          return Padding(
+            padding:
+                index == 0
+                    ? EdgeInsets.only(left: 20, right: 20)
+                    : EdgeInsets.only(right: 20),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 33,
+                  backgroundColor: recipeCategory[index].color,
+                  child: Image.asset(
+                    recipeCategory[index].image,
+                    height: 40,
+                    width: 40,
+                  ),
+                ),
+
+                SizedBox(height: 3),
+                Text(
+                  recipeCategory[index].name,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
