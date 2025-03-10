@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_recipie_app/models/categories_recipe.dart';
 import 'package:flutter_recipie_app/models/recipe_model.dart';
+import 'package:flutter_recipie_app/pages/items_details.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../cors/theme/color.dart';
@@ -73,7 +74,9 @@ class _HomeScreenRecipeState extends State<HomeScreenRecipe> {
                             : EdgeInsets.only(right: 10),
 
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(context, ItemsDetails.route(recipe));
+                      },
                       child: Container(
                         height: 260,
                         width: MediaQuery.of(context).size.width / 2.45,
@@ -266,18 +269,19 @@ class _HomeScreenRecipeState extends State<HomeScreenRecipe> {
                   children: [
                     Icon(
                       icons[index],
-                      color:
-                          index == selectedPage ? Colors.green : Colors.grey,
+                      color: index == selectedPage ? Colors.green : Colors.grey,
                       size: 28,
                     ),
-                    index == selectedPage ? Container(
-                    height: 3,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.green,
-                      ),
-                    ) : SizedBox(),
+                    index == selectedPage
+                        ? Container(
+                          height: 3,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.green,
+                          ),
+                        )
+                        : SizedBox(),
                   ],
                 ),
               ),
