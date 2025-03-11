@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_recipie_app/models/ingredients.dart';
 import 'package:flutter_recipie_app/models/recipe_model.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ItemsDetails extends StatefulWidget {
   static Route route(RecipeItems recipeItems) =>
@@ -134,6 +137,130 @@ class _ItemsDetailsState extends State<ItemsDetails> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 30),
+
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                widget.recipeItems.name,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 2),
+
+                              Text(
+                                "1 Bowl (${widget.recipeItems.weight}g)",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+
+                          Text(
+                            "See Details",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          MyProgressIndicatorValue(
+                            name: 'Carbs',
+                            amount: '${widget.recipeItems.carb} g',
+                            percentage: '(56%)',
+                            color: Colors.green,
+                            data: 0.4,
+                          ),
+                          MyProgressIndicatorValue(
+                            name: 'Fat',
+                            amount: '${widget.recipeItems.fat} g',
+                            percentage: '(72%)',
+                            color: Colors.red,
+                            data: 0.6,
+                          ),
+                          MyProgressIndicatorValue(
+                            name: 'Protein',
+                            amount: '${widget.recipeItems.protein} g',
+                            percentage: '(8%)',
+                            color: Colors.orange,
+                            data: 0.2,
+                          ),
+                          MyProgressIndicatorValue(
+                            name: 'Calories',
+                            amount: '${widget.recipeItems.calorie} kcal',
+                            percentage: '',
+                            color: Colors.green,
+                            data: 0.7,
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 25),
+                      Row(
+                        children: [
+                          Text(
+                            "Ingredients",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            "See all",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(ingredients.length, (index) {
+                      final category = ingredients[index];
+                      return Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundColor: category.color,
+                            child: Image.asset(
+                              category.image,
+                              height: 40,
+                              width: 40,
+                            ),
+                          ),
+
+                          SizedBox(height: 3),
+                          Text(
+                            category.name,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      );
+                    },),
+                  ),
+
                     ],
                   ),
                 ),
@@ -141,25 +268,32 @@ class _ItemsDetailsState extends State<ItemsDetails> {
             ),
 
             Positioned(
-                bottom: size.height * 0.5,
-                child: ClipPath(
-                  clipper: MyClipper(),
-                  child: Container(
-                    height: 70,
-                    width: 70,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                  ),
+              bottom: size.height * 0.5,
+              child: ClipPath(
+                clipper: MyClipper(),
+                child: Container(
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(color: Colors.white),
                 ),
-            ),
-// TODO Add the Favourite Icon
-            Positioned(
-              child: Container(
-
               ),
-            )
-
+            ),
+            // TODO Add the Favourite Icon
+            Positioned(
+              bottom: size.height * 0.48,
+              right: 30,
+              child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(color: Colors.grey.shade200, spreadRadius: 5),
+                  ],
+                  color: widget.recipeItems.fav ? Colors.red : Colors.black45,
+                ),
+                child: Icon(Iconsax.heart, color: Colors.white),
+              ),
+            ),
           ],
         ),
       ),
@@ -167,6 +301,64 @@ class _ItemsDetailsState extends State<ItemsDetails> {
   }
 }
 
+class MyProgressIndicatorValue extends StatelessWidget {
+  final String? name, amount;
+  final String percentage;
+  final Color color;
+  final double data;
+  const MyProgressIndicatorValue({
+    super.key,
+    required this.name,
+    required this.amount,
+    required this.percentage,
+    required this.color,
+    required this.data,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CircularPercentIndicator(
+      radius: 20,
+      circularStrokeCap: CircularStrokeCap.round,
+      percent: data,
+      lineWidth: 7,
+      reverse: true,
+      backgroundColor: color.withOpacity(0.2),
+      animation: true,
+      animationDuration: 500,
+      restartAnimation: true,
+      progressColor: color,
+      header: Padding(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: Text(
+          name!,
+          style: TextStyle(color: Colors.black.withOpacity(0.6), fontSize: 12),
+        ),
+      ),
+      footer: Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: '$amount ',
+                style: const TextStyle(color: Colors.black, fontSize: 12),
+              ),
+              TextSpan(
+                text: percentage,
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class MyClipper extends CustomClipper<Path> {
   @override

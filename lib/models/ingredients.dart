@@ -14,26 +14,26 @@ List<Ingredients> ingredients = [
   Ingredients(
     color: const Color(0xfff4cfcc),
     name: 'Potato',
-    image: 'assets/food-recipe/potato.png',
+    image: 'assets/potato.png',
   ),
   Ingredients(
       color: const Color(0xffb8efd0),
     name: 'onion',
-    image: 'assets/food-recipe/onion.png',
+    image: 'assets/onion.png',
   ),
   Ingredients(
      color: const Color(0xffffe9b2),
     name: 'Almond',
-    image: 'assets/food-recipe/almond.png',
+    image: 'assets/almond.png',
   ),
   Ingredients(
     color: const Color(0xffddd0a4),
     name: 'Broccoli',
-    image: 'assets/food-recipe/broccoli.png',
+    image: 'assets/broccoli.png',
   ),
   Ingredients(
     color: const Color(0xffd8d8d8),
     name: 'Ginger',
-    image: 'assets/food-recipe/ginger.png',
+    image: 'assets/ginger.png',
   ),
 ];
